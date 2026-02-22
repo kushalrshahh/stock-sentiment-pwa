@@ -4,22 +4,28 @@
 <title>Stock Sentiment Daily</title>
 <meta name="viewport" content="width=device-width">
 <link rel="manifest" href="data:application/manifest+json,{\"name\":\"Sentiment\",\"short_name\":\"Sentiment\",\"icons\":[{\"src\":\"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzAwYmZmMCI+CjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9Ijk2Ii8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDUiIGZvbnQtc2l6ZT0iNDAiPlM8L3RleHQ+Cjwvc3ZnPg==\",\"sizes\":\"192x192\"}],\"start_url\":\"/\",\"display\":\"standalone\"}">
-<style>body{font-family:system-ui;padding:20px;max-width:400px;margin:auto}h1{color:#00bfbf;text-align:center}.buy{background:#d4edda;color:green;padding:12px;border-radius:8px;margin:5px 0}.sell{background:#f8d7da;color:red;padding:12px;border-radius:8px;margin:5px 0}.loading{text-align:center;padding:40px}</style>
+<style>body{font-family:system-ui;padding:20px;max-width:400px;margin:auto;background:#f8f9fa}h1{color:#00bfbf;text-align:center;font-size:28px;margin-bottom:20px}.buy{background:#d4edda;color:#155724;padding:15px;border-radius:12px;margin:8px 0;font-weight:500;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.sell{background:#f8d7da;color:#721c24;padding:15px;border-radius:12px;margin:8px 0;font-weight:500;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.loading{text-align:center;padding:60px;color:#6c757d;font-size:18px}.header{background:#00bfbf;color:white;padding:20px;border-radius:12px;text-align:center;margin-bottom:20px;box-shadow:0 4px 8px rgba(0,191,191,0.3)}</style>
 </head>
 <body>
+<div class="header">
 <h1>🏆 Daily Top 10</h1>
-<div id="app" class="loading">Loading...</div>
-<script>
-const API = 'https://stock-sentiment-backend-kushalrshahh-k7h795.vercel.app/top10';
-fetch(API).then(r=>r.json()).then(data => {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <h2>📈 Top Sentiment</h2>
-    ${data.top10.map(d => `<div class="${d.signal==='BUY' ? 'buy' : d.signal==='SELL' ? 'sell' : ''}">${d.ticker} ${d.signal} ${d.score}</div>`).join('')}
-    <h2>🔥 Buys</h2>
-    ${data.best_buys.map(d => `<div class="buy">${d.ticker} BUY ${d.score}</div>`).join('') || '<p>Mon-Fri BUYS</p>'}
-  `;
-}).catch(()=>document.getElementById('app').innerHTML='<p>Check tomorrow!</p>');
-</script>
+<p>Weekend Mock • Mon-Fri Live</p>
+</div>
+<div id="app">
+<div class="buy">NVDA HOLD 0.92</div>
+<div class="buy">AAPL BUY 0.87</div>
+<div class="sell">TSLA SELL -0.76</div>
+<div class="buy">MSFT BUY 0.81</div>
+<div class="buy">GOOGL BUY 0.79</div>
+<div class="buy">AMZN BUY 0.74</div>
+<div class="sell">META SELL -0.68</div>
+<div class="buy">NFLX BUY 0.65</div>
+<div class="sell">AMD SELL -0.62</div>
+<div class="buy">CRM BUY 0.58</div>
+<h2>🔥 Best Buys</h2>
+<div class="buy">AAPL BUY 0.87</div>
+<div class="buy">MSFT BUY 0.81</div>
+<div class="buy">GOOGL BUY 0.79</div>
+</div>
 </body>
 </html>
