@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Sentiment Daily</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="manifest" href="data:application/manifest+json,{\"name\":\"Sentiment\",\"short_name\":\"Sentiment\",\"icons\":[{\"src\":\"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzAwYmZmMCI+CjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9Ijk2Ii8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDUiIGZvbnQtc2l6ZT0iNDAiPlM8L3RleHQ+Cjwvc3ZnPg==\",\"sizes\":\"192x192\"}],\"start_url\":\"/\",\"display\":\"standalone\"}">
+  <style>body{font-family:system-ui;padding:20px;max-width:400px;margin:auto}h1{color:#00bfbf;text-align:center}.buy{background:#d4edda;color:green;padding:12px;border-radius:8px;margin:5px 0}.sell{background:#f8d7da;color:red;padding:12px;border-radius:8px;margin:5px 0}.loading{text-align:center;padding:40px}</style>
+</head>
+<body>
+  <h1>🏆 Daily Top 10</h1>
+  <div id="app" class="loading">Loading...</div>
+  <script>
+    const API = 'https://stock-sentiment-backend-kushalrshahh-k7h795.vercel.app/top10';
+    fetch(API).then(r=>r.json()).then(data => {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <h2>📈 Top Sentiment</h2>
+        ${data.top10.map(d => `<div class="${d.signal==='BUY' ? 'buy' : d.signal==='SELL' ? 'sell' : ''}">${d.ticker} ${d.signal} ${d.score}</div>`).join('')}
+        <h2>🔥 Buys</h2>
+        ${data.best_buys.map(d => `<div class="buy">${d.ticker} BUY ${d.score}</div>`).join('') || '<p>Mon-Fri BUYS</p>'}
+      `;
+    }).catch(()=>document.getElementById('app').innerHTML='<p>Check tomorrow!</p>');
+  </script>
+</body>
+</html>
