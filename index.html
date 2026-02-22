@@ -1,31 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Stock Sentiment Daily</title>
-<meta name="viewport" content="width=device-width">
-<link rel="manifest" href="data:application/manifest+json,{\"name\":\"Sentiment\",\"short_name\":\"Sentiment\",\"icons\":[{\"src\":\"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzAwYmZmMCI+CjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9Ijk2Ii8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDUiIGZvbnQtc2l6ZT0iNDAiPlM8L3RleHQ+Cjwvc3ZnPg==\",\"sizes\":\"192x192\"}],\"start_url\":\"/\",\"display\":\"standalone\"}">
-<style>body{font-family:system-ui;padding:20px;max-width:400px;margin:auto;background:#f8f9fa}h1{color:#00bfbf;text-align:center;font-size:28px;margin-bottom:20px}.buy{background:#d4edda;color:#155724;padding:15px;border-radius:12px;margin:8px 0;font-weight:500;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.sell{background:#f8d7da;color:#721c24;padding:15px;border-radius:12px;margin:8px 0;font-weight:500;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.loading{text-align:center;padding:60px;color:#6c757d;font-size:18px}.header{background:#00bfbf;color:white;padding:20px;border-radius:12px;text-align:center;margin-bottom:20px;box-shadow:0 4px 8px rgba(0,191,191,0.3)}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Sentiment Daily PWA</title>
+    <link rel="manifest" href="data:application/manifest+json,{
+        "name": "Stock Sentiment Daily",
+        "short_name": "Sentiment",
+        "icons": [{
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzAwYmZmMCI+CjxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9Ijk2Ii8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDUiIGZvbnQtc2l6ZT0iNDAiPlM8L3RleHQ+Cjwvc3ZnPg==",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        }],
+        "start_url": "/",
+        "display": "standalone",
+        "theme_color": "#00bfbf",
+        "background_color": "#ffffff"
+    }">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #00bfbf 0%, #0099a1 100%);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,191,191,0.3);
+        }
+        h1 { margin: 0 0 5px 0; font-size: 28px; font-weight: 700; }
+        .subtitle { margin: 0; opacity: 0.9; font-size: 14px; }
+        .status { background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 20px; font-size: 12px; }
+        .signal {
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin: 10px 0;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .signal:hover { transform: translateY(-2px); }
+        .buy { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .sell { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .hold { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .section { margin: 25px 0; }
+        .section h2 { color: #00bfbf; margin: 0 0 15px 0; font-size: 20px; }
+        .loading { text-align: center; padding: 60px 20px; color: #6c757d; font-size: 16px; }
+        .error { background: #f8d7da; color: #721c24; padding: 20px; border-radius: 12px; text-align: center; }
+        @media (prefers-color-scheme: dark) {
+            body { background: #1a1a1a; color: white; }
+            .buy { background: #1e5128; }
+            .sell { background: #4a1c1f; }
+            .hold { background: #4a3f0a; }
+        }
+    </style>
 </head>
 <body>
-<div class="header">
-<h1>🏆 Daily Top 10</h1>
-<p>Weekend Mock • Mon-Fri Live</p>
-</div>
-<div id="app">
-<div class="buy">NVDA HOLD 0.92</div>
-<div class="buy">AAPL BUY 0.87</div>
-<div class="sell">TSLA SELL -0.76</div>
-<div class="buy">MSFT BUY 0.81</div>
-<div class="buy">GOOGL BUY 0.79</div>
-<div class="buy">AMZN BUY 0.74</div>
-<div class="sell">META SELL -0.68</div>
-<div class="buy">NFLX BUY 0.65</div>
-<div class="sell">AMD SELL -0.62</div>
-<div class="buy">CRM BUY 0.58</div>
-<h2>🔥 Best Buys</h2>
-<div class="buy">AAPL BUY 0.87</div>
-<div class="buy">MSFT BUY 0.81</div>
-<div class="buy">GOOGL BUY 0.79</div>
-</div>
+    <div class="header">
+        <h1>🏆 Daily Top 10</h1>
+        <p class="subtitle" id="status">Loading live data...</p>
+    </div>
+
+    <div id="app" class="loading">
+        🔄 Fetching market sentiment from backend...
+    </div>
+
+    <script>
+        const API_URL = 'https://stock-sentiment-backend.vercel.app/top10';
+
+        document.getElementById('status').textContent = 'Calling backend API...';
+
+        fetch(API_URL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: Weekend no data`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const app = document.getElementById('app');
+                if (!data.top10 || data.top10.length === 0) {
+                    throw new Error('Empty data - weekend');
+                }
+
+                app.innerHTML = `
+                    <div class="section">
+                        <h2>📈 Top Sentiment</h2>
+                        ${data.top10.map(stock => 
+                            `<div class="signal ${stock.signal?.toLowerCase() || 'hold'}">
+                                ${stock.ticker} ${stock.signal || 'HOLD'} ${stock.score ? stock.score.toFixed(2) : 'N/A'}
+                            </div>`
+                        ).join('')}
+                    </div>
+                    <div class="section">
+                        <h2>🔥 Best Buys</h2>
+                        ${data.best_buys && data.best_buys.length ? 
+                            data.best_buys.map(stock => 
+                                `<div class="signal buy">${stock.ticker} BUY ${stock.score?.toFixed(2)}</div>`
+                            ).join('') : 
+                            '<p style="color:#6c757d; text-align:center; padding:20px">Available Mon-Fri</p>'
+                        }
+                    </div>
+                `;
+                document.getElementById('status').textContent = `Live data: ${data.top10.length} stocks analyzed`;
+            })
+            .catch(error => {
+                console.log('API Error (normal weekend):', error);
+                document.getElementById('status').innerHTML = '<span class="status">Weekend Mock • Mon-Fri Live</span>';
+                document.getElementById('app').innerHTML = `
+                    <div class="section">
+                        <h2>📈 Top Sentiment (Mock)</h2>
+                        <div class="signal hold">NVDA HOLD 0.92</div>
+                        <div class="signal buy">AAPL BUY 0.87</div>
+                        <div class="signal sell">TSLA SELL -0.76</div>
+                        <div class="signal buy">MSFT BUY 0.81</div>
+                        <div class="signal buy">GOOGL BUY 0.79</div>
+                    </div>
+                    <div class="section">
+                        <h2>🔥 Best Buys</h2>
+                        <div class="signal buy">AAPL BUY 0.87</div>
+                        <div class="signal buy">MSFT BUY 0.81</div>
+                    </div>
+                `;
+            });
+    </script>
 </body>
 </html>
