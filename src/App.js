@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-const API_URL = 'https://stock-sentiment-backend-kushalrshahh-k7h795.vercel.app';  // Your BE
+const API_URL = process.env.REACT_APP_API_URL || 'https://stock-sentiment-backend-kushalrshahh-k7h795.vercel.app';
 
 function App() {
   const [data, setData] = useState([]);
